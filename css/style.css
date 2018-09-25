@@ -1,0 +1,133 @@
+@font-face {
+font-family: 'Gotham';
+src: url('../fonts/GothamPro-Black.eot');
+src: url('../fonts/GothamPro-Black.eot?#iefix') format('embedded-opentype'),
+url('../fonts/GothamPro-Black.woff') format('woff'),
+url('../fonts/GothamPro-Black.ttf') format('truetype'),
+url('../fonts/GothamPro-Black.svg') format('svg');
+font-weight: 900;
+font-style: normal;
+}
+
+
+
+/*Общие*/
+
+* {
+	padding: 0;
+	margin: 0;
+	border: none;
+	outline: none;
+	box-sizing: border-box;
+	/*background: rgba(204,204,255, 0.5);*/
+}
+
+html {
+	font-size: 1vw;
+
+}
+
+.container {
+	margin: 0 auto;
+	padding-left: 35rem;
+  	padding-right: 35rem;
+
+}
+
+.main-body {
+	font-family: "Gotham", "Tahoma", sans-serif;
+	font-weight: 400;
+	width: 100%;
+	overflow-x: hidden;
+	background-color: #fff;
+
+}
+
+.main-content__title {
+	font-weight: 100;
+	font-size: 40px;
+	color: rgba(175, 47, 47, 0.35);
+	text-align: center;
+	font-family: "Gotham";
+}
+
+.todoapp{
+	box-shadow: 0px 1px 4px 0px rgba(0,0,0,0.4);
+	padding: 5px 0px;
+}
+
+.todoapp-write{
+	display: flex;	
+	align-items: center;
+	box-shadow: inset 0px -2px 4px -2px rgba(0,0,0,0.4);
+	padding-bottom: 2px;
+	padding-right: 15px;	
+}
+
+.write-check-label{
+	width: 40px;	
+	height: 40px;
+	box-sizing: border-box;
+	flex-shrink: 0;	
+	margin-right: 20px;	
+	position: relative;
+}
+
+.write-input-check {
+	display: none;
+}
+
+.write-check-label::before{
+	content: '';
+	position: absolute;
+	display: inline-block;
+	width: 10px;
+	height: 10px;
+	border-bottom: 2px solid rgba(153,153,153,0.4);
+	border-right: 2px solid rgba(153,153,153,0.4);
+	transform: rotate(45deg);
+	left: 15px;
+	top:10px;
+}
+
+.write-input-in{
+	width: 100%;
+	padding: 10px 0px;
+	color: #4d4d4d;	
+	font-weight: 700;
+	font-size: 20px;		
+}
+.todoapp-items{
+	display: flex;
+
+}
+
+/* filters */
+
+.todoapp-filters {
+	display: flex;
+	padding: 12px;
+	padding-left: 15px;
+	justify-content: center;
+}
+.todoapp-filters{
+
+}
+
+.filter-btns {
+	margin: 0 auto;
+}
+
+.filter-btn {
+	border: 1px solid transparent;
+	padding: 2px 7px;
+	border-radius: 3px;
+}
+
+.filter-btn.active {
+	border-color:  rgba(175, 47, 47, 0.2);
+}
+
+.filter-btn-clear-completed {
+	background-color: transparent;
+}
