@@ -1,10 +1,10 @@
 @font-face {
-font-family: 'Gotham';
-src: url('../fonts/GothamPro-Black.eot');
-src: url('../fonts/GothamPro-Black.eot?#iefix') format('embedded-opentype'),
-url('../fonts/GothamPro-Black.woff') format('woff'),
-url('../fonts/GothamPro-Black.ttf') format('truetype'),
-url('../fonts/GothamPro-Black.svg') format('svg');
+font-family: 'NordRegular';
+src: url('../fonts/NordRegular.eot');
+src: url('../fonts/NordRegular.eot?#iefix') format('embedded-opentype'),
+/*url('../fonts/NordRegular.woff') format('woff'),*/
+url('../fonts/NordRegular.ttf') format('truetype'),
+url('../fonts/NordRegular.svg') format('svg');*/
 font-weight: 900;
 font-style: normal;
 }
@@ -35,7 +35,7 @@ html {
 }
 
 .main-body {
-	font-family: "Gotham", "Tahoma", sans-serif;
+	font-family: "Tahoma", sans-serif;
 	font-weight: 400;
 	width: 100%;
 	overflow-x: hidden;
@@ -48,7 +48,7 @@ html {
 	font-size: 40px;
 	color: rgba(175, 47, 47, 0.35);
 	text-align: center;
-	font-family: "Gotham";
+	font-family: "NordRegular";
 }
 
 .todoapp{
@@ -56,7 +56,7 @@ html {
 	padding: 5px 0px;
 }
 
-.todoapp-write{
+.todo-write{
 	display: flex;	
 	align-items: center;
 	box-shadow: inset 0px -2px 4px -2px rgba(0,0,0,0.4);
@@ -99,19 +99,113 @@ html {
 }
 .todoapp-items{
 	display: flex;
+}
 
+.todo-item {
+	padding-left: 10px;
+	display: flex;
+	-ms-align-items: center;
+	align-items: center;
+	padding-right: 15px;
+	border-bottom: 1px solid #ccc;
+	position: relative;		
+}
+
+.item-check-label {
+	border: 1px solid #ccc;
+	border-radius: 50%;
+	width: 25px;	
+	height: 25px;
+	flex-shrink: 0;	
+	display: inline-block;
+	margin-right: 15px;	
+	position: relative;
+
+}
+
+.item-check-label::before {
+	width: 7px;	
+	height: 15px;	
+	content: "";
+	display: inline-block;	
+	border-bottom: 1px solid green;
+	border-right: 1px solid green;
+	transform: rotate(45deg);
+	position: absolute;
+	left: 50%;
+	margin-left: -3.5px;
+	top: 1px;
+	opacity: 0;			
+}
+.item-input-check {
+	display: none;	
+
+}
+.item-input-check:checked ~ .item-check-label::before {
+	display: inline-block;	
+	opacity: 1;	
+}
+.todo-item__span {
+	width: 100%;
+	padding: 10px 0px;
+	color: #4d4d4d;	
+	font-weight: 700;
+	font-size: 20px;
+	transition: all 0.4s;	
+}
+.item-input-check:checked ~ .todo-item__span {
+	text-decoration:line-through;
+	color: #d9d9d9;
+
+}
+.todo-item:hover  .todo-item__close::before {
+	display: inline-block;
+}
+.todo-item__close {
+	position: absolute;
+	width: 10px;
+	height: 10px;
+	right: 10px;
+	top: 50%;
+	margin-top: -5px;
+	color: #cc9a9a;
+	font-weight: 700;
+	background-color: transparent;
+}
+.todo-item__close::before {
+	content: "×";
+	line-height: 0px;
+	font-size: 28px;
+	display: none;
+}
+.todo-item__close:hover::before {
+	color: #913D40;
+	cursor: pointer;
+}
+
+.edit {
+	position: relative;
+	font-size: 24px;
+	font-family: inherit;
+	font-weight: inherit;
+	line-height: 1.4em;
+	color: inherit;
+	border: 1px solid #999;
+	box-shadow: inset 0 -1px 5px 0 rgba(0, 0, 0, 0.2);
+	box-sizing: border-box;
+	display: block;
+	width: 100%;
+	padding: 5px 50px;
+	margin:0;
 }
 
 /* filters */
 
-.todoapp-filters {
+.todo-filters{
 	display: flex;
-	padding: 12px;
-	padding-left: 15px;
+	padding: 10px;
+	padding-left: 10px;
 	justify-content: center;
-}
-.todoapp-filters{
-
 }
 
 .filter-btns {
@@ -128,6 +222,6 @@ html {
 	border-color:  rgba(175, 47, 47, 0.2);
 }
 
-.filter-btn-clear-completed {
+.btn-clear-completed {
 	background-color: transparent;
 }
