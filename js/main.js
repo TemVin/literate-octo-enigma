@@ -26,7 +26,8 @@
 			App.todoList = App.todoList.filter((el) => {
 				return (el.element !== this.element);
 			});
-			App.changeLeftCase(App.leftItem);
+			App.changeLeftCase();
+			App.changeLocalStorage();
 
 		};
 
@@ -38,7 +39,8 @@
 			else {
 				this.state = false;
 			}
-			App.changeLeftCase(App.leftItem);
+			App.changeLeftCase();
+			App.changeLocalStorage();
 		};
 		
 
@@ -47,12 +49,14 @@
 		/* редактирования дела*/
 		this.editingCase = (evt)=> {
 			var input = this.element.parentNode.querySelector('.edit');
+			this.element.classList.add("editing");
 			if(input){
 				input.parentNode.spanElement.innerHTML = input.value;
 				input.parentNode.removeChild(input);
 			}
 			var newInput = document.createElement('input');
 			newInput.className = 'edit';
+			//this.parentNode.className = "editing"
 			this.element.appendChild(newInput);
 			newInput.value =  this.spanElement.innerHTML;
 			newInput.focus();
@@ -60,14 +64,28 @@
 			newInput.addEventListener("keyup", (evt) => {
 				if(evt.key == "Enter"){
 					this.spanElement.innerHTML = newInput.value;
+					this.element.focus();
+					App.todoList[id-1].data = this.spanElement.innerHTML; 	
 					this.element.removeChild(newInput);
+					//newInput.className = 'hide';
+					//alert(newInput);
+					this.element.classList.remove("editing");
+					App.changeLocalStorage();
 				}
-			})
+			});
+
 			newInput.addEventListener("blur", (evt) => {
 				this.spanElement.innerHTML = newInput.value;
-				this.element.removeChild(newInput);
-			})
+				//this.element.removeChild(newInput);
+				App.todoList[id-1].data = this.spanElement.innerHTML; 
+				newInput.className = 'hide';	
+				App.changeLocalStorage();
+				newInput.remove(document.querySelector(".hide"));
+				this.element.classList.remove("editing");
+			});
+			//this.element.removeChild();
 		};
+
 
 		this.spanElement.addEventListener('dblclick', this. editingCase);
 		this.closeElement.addEventListener('click', this.remove);
@@ -94,7 +112,7 @@
 	};
 
 	const Items = function(){
-		this.state = "ALL";
+		this.state/*filter*/ = "ALL";
 		this.todoList = [];
 		this.checkState = false;
 
@@ -118,13 +136,15 @@
 				});
 				evt.target.classList.add('active');
 				this.changeState(evt.target.id);
-
+				this.changeLocalStorage();
 			}
+
 			if(evt.target.classList.contains('btn-clear-completed')){
 				this.todoList = this.todoList.filter(function(element){
 					return !element.state;
 				});
 				this.changeState();
+				this.changeLocalStorage();
 			}
 		});
 
@@ -145,13 +165,14 @@
 				if(data){
 					this.createChild(data);
 					this.writeInput.value = null;
-					this.changeLeftCase(this.leftItem);
+					this.changeLeftCase();
 					this.changeState();
+					this.changeLocalStorage();
 				}
 			}
 		});
 
-		this.changeLeftCase = (domElem) => {
+		this.changeLeftCase = () => {
 			this.leftCase = this.todoList.filter(function(element){
 				return !element.state;
 			});
@@ -165,7 +186,7 @@
 				this.writeCheck.checked = false;
 			}
 
-			domElem.innerHTML = this.leftCase.length;
+			this.leftItem.innerHTML = this.leftCase.length;
 		};
 
 		this.checkAll = () => {
@@ -175,7 +196,7 @@
 					item.state = true;
 				});
 				this.checkState = true;
-				this.changeLeftCase(this.leftItem);
+				this.changeLeftCase();
 			}
 			else {
 				this.todoList.forEach((item) => {
@@ -183,7 +204,7 @@
 					item.state = false;
 				});
 				this.checkState = false;
-				this.changeLeftCase(this.leftItem);
+				this.changeLeftCase();
 			}
 
 		};
@@ -192,16 +213,16 @@
 			this.todoList.push(caseEl);
 		};
 
-		this.renderFromStorage = (arrayStorage, state, parent) => {
-			this.state = state;
-			arrayStorage.forEach((item, number) => {
+		this.renderFromStorage = (storage, storageAppState) => {
+			storage.forEach((item) => {
 				this.createChild(item.data, item.state);
 			});
-			this.changeLeftCase(this.leftItem);
-			this.changeState();
+			this.changeLeftCase();
+			this.changeState(storageAppState);
+			//this.changeLocalStorage();
 		};
 		this.btnFilter = this.element.querySelectorAll('.filter-btn');
-		this.changeState = (state) => {
+	/*setFilter*/	this.changeState = (state/*filterParam*/) => {
 			if(state){
 				this.state = state;
 			}
@@ -237,33 +258,31 @@
 			});
 		};
 
-		this.changeLocalStorage = () => {
-			setTimeout(() => {
-				localStorage.setItem("todoList", JSON.stringify(this.todoList));
-				localStorage.setItem("AppState", this.state);
-				this.changeLocalStorage();
-			}, 1000);
+/*updateLocalStorage, цriteLocalMemory*/
+	this.changeLocalStorage = () => {
+			localStorage.setItem("todoList", JSON.stringify(this.todoList));
+			localStorage.setItem("AppState", this.state);
 		};
 	};
 
-	const storage = JSON.parse(localStorage.getItem("todoList"));
-	const storaggeAppState = localStorage.getItem("AppState");
+
 	const mainAppContainer = document.querySelector('.main-content');
 	let App = new Items();
 	App.append(mainAppContainer);
 
+	const storage = JSON.parse(localStorage.getItem("todoList"));
+	const storageAppState = localStorage.getItem("AppState");
+
 	const initApp = () => {
 		if(storage){
-			App.renderFromStorage(storage, storaggeAppState);
+			App.renderFromStorage(storage, storageAppState);
 			App.changeState();
-			App.changeLeftCase(App.leftItem);
+			App.changeLeftCase();
 		}
 		else {
 			return false;
 		}
-	};
+	}
 	initApp();
-
-		App.changeLocalStorage();
 
 }());
