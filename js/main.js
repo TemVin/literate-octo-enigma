@@ -11,12 +11,14 @@
 		element.querySelector('.item-check-label').setAttribute('for', `itemCheck-${id}`);
 		return element;
 	};
+
+
+
 	const Case = function(data, id, boolean = false, App){
 		this.data = data;
 		this.element = getCaseElement(this.data, id);
 
 		this.state = boolean;
-
 
 		this.checkElement = this.element.querySelector('.item-input-check');
 		this.closeElement = this.element.querySelector('.todo-item__close');
@@ -27,12 +29,11 @@
 				return (el.element !== this.element);
 			});
 			App.changeLeftCase();
-			App.changeLocalStorage();
+			App.writeLocalMemory();
 
 		};
 
 		this.changeState = (evt) => {
-
 			if(evt.target.checked){
 				this.state = true;
 			}
@@ -40,13 +41,14 @@
 				this.state = false;
 			}
 			App.changeLeftCase();
-			App.changeLocalStorage();
+			App.changeStateFilter();
+			App.writeLocalMemory();
 		};
 		
 
 		this.spanElement = this.element.querySelector('.todo-item__span');
 
-		/* редактирования дела*/
+		/* редактирование case*/
 		this.editingCase = (evt)=> {
 			var input = this.element.parentNode.querySelector('.edit');
 			this.element.classList.add("editing");
@@ -56,7 +58,6 @@
 			}
 			var newInput = document.createElement('input');
 			newInput.className = 'edit';
-			//this.parentNode.className = "editing"
 			this.element.appendChild(newInput);
 			newInput.value =  this.spanElement.innerHTML;
 			newInput.focus();
@@ -67,23 +68,19 @@
 					this.element.focus();
 					App.todoList[id-1].data = this.spanElement.innerHTML; 	
 					this.element.removeChild(newInput);
-					//newInput.className = 'hide';
-					//alert(newInput);
 					this.element.classList.remove("editing");
-					App.changeLocalStorage();
+					App.writeLocalMemory();
 				}
 			});
 
 			newInput.addEventListener("blur", (evt) => {
 				this.spanElement.innerHTML = newInput.value;
-				//this.element.removeChild(newInput);
 				App.todoList[id-1].data = this.spanElement.innerHTML; 
 				newInput.className = 'hide';	
-				App.changeLocalStorage();
+				App.writeLocalMemory();
 				newInput.remove(document.querySelector(".hide"));
 				this.element.classList.remove("editing");
 			});
-			//this.element.removeChild();
 		};
 
 
@@ -93,7 +90,10 @@
 
 	};
 
-	const renderTodoList = (filterItems, pasteElement) => {
+
+
+/* отрисовка todolist */
+	const renderTodoList = (filterItems, pasteElement) => {		
 		let container = document.createDocumentFragment();
 		pasteElement.innerHTML = "";
 		filterItems.forEach(function(item){
@@ -103,6 +103,8 @@
 		pasteElement.appendChild(container);
 	};
 
+
+
 	const mainTemplate1 = document.querySelector("#main-template");
 	const elementToClone1 = mainTemplate1.content.querySelector("#mainTodoapp");
 
@@ -111,17 +113,19 @@
 		return element;
 	};
 
+
+
 	const Items = function(){
-		this.state/*filter*/ = "ALL";
+		this.filter = "ALL";
 		this.todoList = [];
 		this.checkState = false;
-
 		this.element = getItemsElement();
 
 		this.writeInput = this.element.querySelector("#mainWriteInput");
 		this.leftItem = this.element.querySelector('#leftItem');
 		this.writeCheck = this.element.querySelector('#writeCheck');
 		this.filtersWrap = this.element.querySelector(".todo-filters");
+		this.writeLabel = this.element.querySelector(".write-check-label");
 		
 
 		this.append = (elemContainer) => {
@@ -135,62 +139,21 @@
 					el.classList.remove('active');
 				});
 				evt.target.classList.add('active');
-				this.changeState(evt.target.id);
-				this.changeLocalStorage();
+				this.changeStateFilter(evt.target.id);
+				this.writeLocalMemory();
 			}
 
 			if(evt.target.classList.contains('btn-clear-completed')){
 				this.todoList = this.todoList.filter(function(element){
 					return !element.state;
 				});
-				this.changeState();
-				this.changeLocalStorage();
+				this.changeStateFilter();
+				this.writeLocalMemory();
 			}
 		});
 
-		this.writeCheck.addEventListener('change', () => {
-			this.checkAll();
-		});
-
-		this.createChild = (data, state = false) => {
-			const newElement = new Case(data, this.todoList.length + 1, state, this);
-			this.pushTodoList(newElement);
-			return newElement;
-		};
-
-
-		this.writeInput.addEventListener("keyup", (evt) => {
-			if(evt.key == "Enter"){
-				const data = this.writeInput.value;
-				if(data){
-					this.createChild(data);
-					this.writeInput.value = null;
-					this.changeLeftCase();
-					this.changeState();
-					this.changeLocalStorage();
-				}
-			}
-		});
-
-		this.changeLeftCase = () => {
-			this.leftCase = this.todoList.filter(function(element){
-				return !element.state;
-			});
-
-			if(this.leftCase.length == 0){
-				this.checkState = true;
-				this.writeCheck.checked = true;
-			}
-			if(this.leftCase.length == this.todoList.length){
-				this.checkState = false;
-				this.writeCheck.checked = false;
-			}
-
-			this.leftItem.innerHTML = this.leftCase.length;
-		};
-
-		this.checkAll = () => {
-			if(!this.checkState){
+		this.writeCheck.addEventListener('change', () => { /*checkAll*/
+				if(this.leftCase.length > 0){
 				this.todoList.forEach((item) => {
 					item.checkElement.checked = true;
 					item.state = true;
@@ -206,31 +169,60 @@
 				this.checkState = false;
 				this.changeLeftCase();
 			}
+			this.changeStateFilter()
+			this.writeLocalMemory();
+		});
 
+		this.createChild = (data, state = false) => {
+			const newElement = new Case(data, this.todoList.length + 1, state, this);
+			this.pushTodoList(newElement);
+			return newElement;
+		};
+
+
+		this.writeInput.addEventListener("keyup", (evt) => {
+			if(evt.key == "Enter"){
+				const data = this.writeInput.value.trim();
+				if(data){
+					this.createChild(data);
+					this.writeInput.value = null;
+					this.changeLeftCase();
+					this.changeStateFilter();
+					this.writeLocalMemory();
+				}
+			}
+		});
+
+		this.changeLeftCase = () => {
+			this.leftCase = this.todoList.filter(function(element){
+				return !element.state;
+			});
+
+			this.leftItem.innerHTML = this.leftCase.length;
 		};
 
 		this.pushTodoList = (caseEl) => {
 			this.todoList.push(caseEl);
 		};
-
+		/*отрисовка в пямять*/
 		this.renderFromStorage = (storage, storageAppState) => {
 			storage.forEach((item) => {
 				this.createChild(item.data, item.state);
 			});
 			this.changeLeftCase();
-			this.changeState(storageAppState);
-			//this.changeLocalStorage();
+			this.changeStateFilter(storageAppState);
+			//this.writeLocalMemory();
 		};
 		this.btnFilter = this.element.querySelectorAll('.filter-btn');
-	/*setFilter*/	this.changeState = (state/*filterParam*/) => {
-			if(state){
-				this.state = state;
+		this.changeStateFilter = (filterParam) => {
+			if(filterParam){
+				this.filter = filterParam;
 			}
 			let newTodo;
 
 			const todoItems = this.element.querySelector("#todoItems");
 
-			switch (this.state) {
+			switch (this.filter) {
 				case 'ALL':
 				renderTodoList(this.todoList, todoItems);
 				break;
@@ -249,7 +241,7 @@
 			}
 			this.btnFilter.forEach((item) => {
 
-				if(item.id === `${this.state}`) {
+				if(item.id === `${this.filter}`) {
 					item.classList.add('active');
 				}
 				else if(item.classList.contains('active')){
@@ -258,12 +250,12 @@
 			});
 		};
 
-/*updateLocalStorage, цriteLocalMemory*/
-	this.changeLocalStorage = () => {
+		this.writeLocalMemory = () => {
 			localStorage.setItem("todoList", JSON.stringify(this.todoList));
-			localStorage.setItem("AppState", this.state);
+			localStorage.setItem("AppState", this.filter);
 		};
 	};
+
 
 
 	const mainAppContainer = document.querySelector('.main-content');
@@ -276,7 +268,7 @@
 	const initApp = () => {
 		if(storage){
 			App.renderFromStorage(storage, storageAppState);
-			App.changeState();
+			//App.changeStateFilter();
 			App.changeLeftCase();
 		}
 		else {
