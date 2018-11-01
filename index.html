@@ -8,56 +8,40 @@
 </head>
 <body class="main-body">
 	<div class="container">
-		<section class="main-content">
+		<section class="main-content js-main-content">
 			<h1 class="main-content__title">Todos</h1>
 		</section>
 	</div>
-
 	<template id="main-template">
 		<li id="todo-item-template">
 			<div class = "todo-item">
-				<input type="checkbox" id="itemCheck-1" class="item-input-check">
-				<label for="itemCheck-1" class="item-check-label"></label>
-				<span type="text" class="todo-item__span"></span>
-				<button class="todo-item__close" type="button"></button>
+				<input type="checkbox" id="itemCheck-1" class="item-input-check js-item-input-check">
+				<label for="itemCheck-1" class="item-check-label js-item-check-label"></label>
+				<span type="text" class="todo-item__span js-todo-item__span"></span>
+				<button class="todo-item__close js-todo-item__close" type="button"></button>
 			</div>
 		</li>	
 		<section class="todoapp" id="mainTodoapp">
 			<header class="todo-write">
 				<input type="checkbox" id="writeCheck" class="write-input-check">
-				<label for="writeCheck" class="write-check-label"></label>
+				<label for="writeCheck" class="write-check-label js-write-check-label"></label>
 				<input type="text" class="write-input-in" id="mainWriteInput" placeholder="What needs to be done?">
-			</header>
-			
+			</header>	
 			<ul class="todo-items" id="todoItems"></ul>
-			<section class="todo-filters">
+			<section class="todo-filters js-todo-filters">
 				<span class="tasks-counter">
 					<span id="leftItem"></span>
 					item left
 				</span>
 				<div class="filter-btns">
-					<span class="filter-btn active" id="ALL">All</span>
-					<span class="filter-btn" id="ACTIVE">Active</span>
-					<span class="filter-btn" id="COMPLETED">Completed</span>
+					<span class="filter-btn js-filter-btn active" id="ALL">All</span>
+					<span class="filter-btn js-filter-btn" id="ACTIVE">Active</span>
+					<span class="filter-btn js-filter-btn" id="COMPLETED">Completed</span>
 				</div>
-				<button class="btn-clear-completed" id="clear-completed">Clear completed</button>
+				<button class="btn-clear-completed js-btn-clear-completed" id="clear-completed">Clear completed</button>
 			</section>
 		</section>
 	</template>
 	<script src="js/main.js"></script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
