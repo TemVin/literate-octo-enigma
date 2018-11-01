@@ -2,27 +2,26 @@ import getCaseElement from './getCaseElement';
 import renderTodoList from './render';
 
 
-const Case = function(data, id, boolean = false, App){
+const Case = function(data, id, boolean = false, App) {
 	this.data = data;
 	this.id = id;
 	this.element = getCaseElement(this.data, id);
 	this.state = boolean;
 
-	this.checkElement = this.element.querySelector('.item-input-check');
-	this.closeElement = this.element.querySelector('.todo-item__close');
+	this.checkElement = this.element.querySelector('.js-item-input-check');
+	this.closeElement = this.element.querySelector('.js-todo-item__close');
 
 	this.remove = () => {
 		this.element.parentNode.removeChild(this.element);
 		App.todoList = App.todoList.filter((el) => {
 			return (el.element !== this.element);
 		});
-		
 		App.changeLeftCase();
 		App.writeLocalMemory();
 	};
 
 	this.changeState = (evt) => {
-		if(evt.target.checked){
+		if (evt.target.checked) {
 			this.state = true;
 		}
 		else {
@@ -33,12 +32,12 @@ const Case = function(data, id, boolean = false, App){
 		App.writeLocalMemory();
 	};
 
-	this.spanElement = this.element.querySelector('.todo-item__span');
+	this.spanElement = this.element.querySelector('.js-todo-item__span');
 
-	this.getIndexById = () =>{
+	this.getIndexById = () => {
 		let ind;
-		for (var i = 0; i < App.todoList.length; i++){
-			if (App.todoList[i].id == id){
+		for (var i = 0; i < App.todoList.length; i++) {
+			if (App.todoList[i].id == id) {
 				ind = i;
 				break;
 			}
@@ -57,10 +56,10 @@ const Case = function(data, id, boolean = false, App){
 		newInput.focus();
 
 		newInput.addEventListener('keyup', (evt) => {
-			if (evt.key == 'Enter'){
+			if (evt.key == 'Enter') {
 				const data = newInput.value.trim();
 				let ind = this.getIndexById();
-				if(data){	
+				if (data) {	
 					this.element.focus();
 					App.todoList[ind].data = data;
 					this.spanElement.innerHTML = data; 
@@ -77,11 +76,11 @@ const Case = function(data, id, boolean = false, App){
 		newInput.addEventListener('blur', (evt) => {
 			const data = newInput.value.trim();
 			let ind = this.getIndexById();
-			if(data){
+			if (data) {
 				App.todoList[ind].data = data; 
 				this.spanElement.innerHTML = data;
 			}
-			else{
+			else {
 				App.todoList[ind].remove();
 			}
 			App.writeLocalMemory();
@@ -90,11 +89,9 @@ const Case = function(data, id, boolean = false, App){
 		});
 	};
 
-
 	this.spanElement.addEventListener('dblclick', this.editingCase);
 	this.closeElement.addEventListener('click', this.remove);
 	this.checkElement.addEventListener('change', this.changeState);
-
 };
 
 export default Case;

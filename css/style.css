@@ -8,7 +8,6 @@
 	font-style: normal;
 }
 
-
 /*Общие*/
 
 * {
@@ -27,67 +26,65 @@ html {
 	margin: 10px auto 0px;
 	padding-left: 35rem;
 	padding-right: 35rem;
-
 }
 
 .main-body {
-	font-family: "Tahoma", sans-serif;
-	font-weight: 400;
 	width: 100%;
 	overflow-x: hidden;
+	font-family: "Tahoma", sans-serif;
+	font-weight: 400;
 	background-color: #fff;
 }
 
 .main-content__title {
 	font-weight: 100;
 	font-size: 40px;
-	color: rgba(175, 47, 47, 0.35);
 	text-align: center;
 	font-family: "NordRegular";
+	color: rgba(175, 47, 47, 0.35);
 }
 
-.todoapp{
-	box-shadow: 0px 1px 4px 0px rgba(0,0,0,0.4);
+.todoapp {
 	padding: 5px 0px;
+	box-shadow: 0px 1px 4px 0px rgba(0,0,0,0.4);
 }
 
-.todo-write{
+.todo-write {
 	display: flex;	
-	align-items: center;
-	box-shadow: inset 0px -2px 4px -2px rgba(0,0,0,0.4);
 	padding-bottom: 2px;
 	padding-right: 15px;	
 	margin-top: -5px;
+	box-shadow: inset 0px -2px 4px -2px rgba(0,0,0,0.4);
+	align-items: center;
 }
 
-.write-check-label{
+.write-check-label {
+	position: relative;
 	width: 50px;	
 	height: 40px;
 	box-sizing: border-box;
 	flex-shrink: 0;	
-	position: relative;
-
 }
 
 .write-input-check {
 	display: none;
 }
 
-.write-check-label::before{
+.write-check-label::before {
 	content: '';
 	position: absolute;
 	display: inline-block;
+	left:18px;
+	top:10px;
 	width: 10px;
 	height: 10px;
 	border-bottom: 2px solid rgba(153,153,153,0.4);
 	border-right: 2px solid rgba(153,153,153,0.4);
 	transform: rotate(45deg);
-	left:18px;
-	top:10px;
 }
 
 
-.write-input-in{
+.write-input-in {
 	width: 100%;
 	padding: 10px 0px;
 	color: #4d4d4d;	
@@ -102,39 +99,38 @@ html {
 }
 
 .todo-item {
-	padding-left: 10px;
+	position: relative;	
 	display: flex;
+	padding-left: 10px;
+	padding-right: 15px;
 	-ms-align-items: center;
 	align-items: center;
-	padding-right: 15px;
 	border-bottom: 1px solid #ccc;
-	position: relative;	
 }
 
 .item-check-label {
-	border: 1px solid #ccc;
-	border-radius: 50%;
-	width: 25px;	
-	height: 25px;
-	flex-shrink: 0;	
+	position: relative;
 	display: inline-block;
 	margin-right: 15px;	
-	position: relative;
-
+	width: 25px;	
+	height: 25px;
+	border: 1px solid #ccc;
+	border-radius: 50%;
+	flex-shrink: 0;	
 }
 
 .item-check-label::before {
+	content: "";
+	position: absolute;
+	display: inline-block;
+	left: 50%;
+	top: 1px;	
 	width: 7px;	
 	height: 15px;	
-	content: "";
-	display: inline-block;	
+	margin-left: -3.5px;
 	border-bottom: 1px solid green;
 	border-right: 1px solid green;
 	transform: rotate(45deg);
-	position: absolute;
-	left: 50%;
-	margin-left: -3.5px;
-	top: 1px;
 	opacity: 0;			
 }
 
@@ -162,17 +158,17 @@ html {
 	color: #d9d9d9;
 }
 
-.todo-item:hover  .todo-item__close::before {
+.todo-item:hover .todo-item__close::before {
 	display: inline-block;
 }
 
 .todo-item__close {
 	position: absolute;
-	width: 25px;
-	height: 25px;
 	right: 15px;
 	top: 50%;
 	margin-top: -5px;
+	width: 25px;
+	height: 25px;
 	color: #cc9a9a;
 	font-weight: 700;
 	background-color: transparent;
@@ -180,9 +176,9 @@ html {
 
 .todo-item__close::before {
 	content: "×";
+	display: none;
 	line-height: 0px;
 	font-size: 28px;
-	display: none;
 }
 
 .todo-item__close:hover::before {
@@ -192,16 +188,15 @@ html {
 
 .edit {
 	position: relative;
-	margin: 0;
 	width: 100%;
+	margin: 0;
+	padding: 6px;
+	border: 1px solid #999;
+	color: inherit;
 	font-size: 24px;
 	font-family: inherit;
 	font-weight: inherit;
 	line-height: 1.4em;
-	border: 0;
-	color: inherit;
-	padding: 6px;
-	border: 1px solid #999;
 	box-shadow: inset 0 -1px 5px 0 rgba(0, 0, 0, 0.2);
 	box-sizing: border-box;
 	-webkit-font-smoothing: antialiased;
@@ -209,14 +204,13 @@ html {
 }
 
 .todo-items li.editing {
-	border-bottom: none;
 	padding: 0;
+	border-bottom: none;
 }
 
 .todo-items li.editing .edit {
 	display: block;
 	width: 418px; 
-	/*padding: 12px 16px;*/
 	margin: 0 0 0 43px;
 }
 
@@ -224,7 +218,7 @@ html {
 	display: none;
 }
 
-li{
+li {
 	list-style-type:none;
 }
 
@@ -234,7 +228,7 @@ li{
 
 /* filters */
 
-.todo-filters{
+.todo-filters {
 	display: flex;
 	padding: 10px;
 	padding-left: 10px;
@@ -263,29 +257,32 @@ li{
 
 .btn-clear-completed {
 	background-color: transparent;
-
 }
 
 /*адаптивность*/
+
 @media (max-width:554px) {
 	.container {
 		width:320px;
 		padding:0 10px;	
 	}
+
 	.todo-items li.editing .edit {
 		width: 258px;
 	}
-	.todo-filters{
+
+	.todo-filters {
 	 display: inline-block;
 	}
-	.filter-btns{
+
+	.filter-btns {
 		margin: 10px 0;
 		padding: 0 10px 0 62px;
 	}
-	.tasks-counter{
+	.tasks-counter {
 		padding: 105px;
 	}
-	.btn-clear-completed{
+	.btn-clear-completed {
 		padding: 0 85px;
 	}
 } 
@@ -315,7 +312,6 @@ li{
 	.todo-items li.editing .edit {
 		display: block;
 		width: 818px; 
-		/*padding: 12px 16px;*/
 		margin: 0 0 0 43px;
 	}
 }
