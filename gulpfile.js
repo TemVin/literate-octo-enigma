@@ -34,7 +34,7 @@ gulp.task('copy-html', function () {
 	.pipe(server.stream());
 });
 
-gulp.task('scripts', function(){
+gulp.task('scripts', function() {
 	gulp.src('js/main.js')
 	.pipe(plumber())
 	.pipe(sourcemaps.init())
